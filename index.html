@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tooth</title>
+<link href="css/mystyles.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Asap:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Signika' rel='stylesheet' type='text/css'>
+<script src="src/uncompressed/TweenLite.js"></script>
+<script src="src/uncompressed/plugins/CSSPlugin.js"></script>
+<script src="src/chart/Chart.js"></script>
+</head>
+
+<body>
+	<script>
+	var box1,box2,box3,h=m=s=_h=_m=_s=_pre=0;
+	window.onload = function(){
+		box1 = document.getElementById("numbox1");
+		box2 = document.getElementById("numbox2");
+		box3 = document.getElementById("numbox3");
+		box1.addEventListener('webkitTransitionEnd',traEnd,false);
+		box2.addEventListener('webkitTransitionEnd',traEnd,false);
+		box3.addEventListener('webkitTransitionEnd',traEnd,false);
+		//window.addEventListener("mousemove",mouse_mover,false);
+	}
+	var mouse_mover = function(event){
+	}
+	function boxhover(mc){
+		mc.addEventListener('webkitTransitionEnd',traEnd,false);
+	}
+	function traEnd(event){
+		var mc = event.target;
+		if(mc.offsetWidth==100)
+		{
+			mc.innerHTML = mc.innerHTML.replace(/[^0-9]/g,'');
+			return;
+		}
+		var s = mc.innerHTML.replace(/[^0-9]/g,'');
+		if(mc.offsetWidth<200)return;
+		switch(mc)
+		{
+			case document.getElementById("numbox1"):
+				mc.innerHTML = s+"时";
+				break;
+			case document.getElementById("numbox2"):
+				mc.innerHTML = s+"分";
+				break;
+			case document.getElementById("numbox3"):
+				mc.innerHTML = s+"秒";
+				break; 
+		}
+		}
+	function boxout(mc){
+		//var s =  mc.innerHTML.replace(/^\s*|\s*$/g, "").toString();
+		//mc.removeEventListener('webkitTransitionEnd',traEnd,false);
+		mc.innerHTML = mc.innerHTML.replace(/[^0-9]/g,'');
+		}
+	var int = self.setInterval("clicpMove()",500);
+	function clicpMove(){
+		if(box1&&box2&&box3)
+		{
+			var date = new Date();
+			h = date.getHours();
+			m = date.getMinutes();
+			s = date.getSeconds();
+			if(h!=_h)
+			{
+				_h = h;
+				box1.innerHTML = h.toString();
+				if(box1.offsetWidth!=100)
+				{
+					box1.innerHTML = m.toString()+"时";
+					}
+				TweenLite.to(box1,0.5,{x:(window.innerWidth-box1.offsetWidth)*h/24});
+			}
+			if(m!=_m)
+			{
+				_m = m;
+				box2.innerHTML = m.toString();
+				if(box2.offsetWidth!=100)
+				{
+					box2.innerHTML = m.toString()+"分";
+					}
+				TweenLite.to(box2,0.5,{x:(window.innerWidth-box2.offsetWidth)*m/60});
+			}
+			if(s!=_s)
+			{
+				_s = s;
+				box3.innerHTML = s.toString();
+				if(box3.offsetWidth!=100)
+				{
+					box3.innerHTML = s.toString()+"秒";
+					}
+				TweenLite.to(box3,0.5,{x:(window.innerWidth-box3.offsetWidth)*s/60});
+			}
+		}
+		}
+	</script>
+    <div class="line">
+    </div>
+	<div class="box" id="numbox1" onMouseOut="boxout(this)">
+    	0
+    </div>
+    <div class="line">
+    </div>
+    <div class="box" id="numbox2" onMouseOut="boxout(this)">
+    	1
+    </div>
+    <div class="line">
+    </div>
+    <div class="box" id="numbox3" onMouseOut="boxout(this)">
+    	2
+    </div>
+</body>
+</html>
